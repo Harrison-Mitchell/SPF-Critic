@@ -8,7 +8,7 @@ Audit your domain's SPF record, particularly for overtake and impersonation cond
 
 ### Usage
 
-Run `./refreshIPs.sh` to renew publicly-registrable CIDR ranges for various cloud platforms, then `python3 spfcritic.py example.com` to audit an SPF policy.
+Run `./refreshIPs.sh` to renew publicly-registrable CIDR ranges for various cloud platforms, then `python3 spf.py example.com` to audit an SPF policy.
 
 ### Checks
 
@@ -22,6 +22,8 @@ Run `./refreshIPs.sh` to renew publicly-registrable CIDR ranges for various clou
 ### Example (fictional)
 
 ```
+$ python3 spf.py google.com
+
 google.com's SPF record is:
 
   v=spf1 include:_spf.google.com ~all
