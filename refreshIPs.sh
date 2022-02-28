@@ -11,7 +11,8 @@ curl -s https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r '.prefixes[] | se
 echo "done"
 
 echo -n "Pulling user-registrable Azure CIDRs... "
-curl -s https://download.microsoft.com/download/7/1/D/71D86715-5596-4529-9B13-DA13A5DE5B63/ServiceTags_Public_20220110.json | jq -r '.values[] | select(.name | contains("AzureCloud")) | .properties.addressPrefixes | join("\n")' | grep -v '::' | sed -e 's/$/|Azure/' >> IPs.txt
+AZUREURL="$(curl -s https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519 | grep -A 1 '30 seconds' | tr '"' '\n' | grep ".json$")"
+curl -s "$AZUREURL" | jq -r '.values[] | select(.name | contains("AzureCloud")) | .properties.addressPrefixes | join("\n")' | grep -v '::' | sed -e 's/$/|Azure/' >> IPs.txt
 echo "done"
 
 echo -n "Pulling user-registrable Digital Ocean CIDRs... "

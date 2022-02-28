@@ -118,9 +118,9 @@ else:
 	info("All hostnames were resolved", "An irresolvable hostname may invalidate the entire record")
 
 # No hard fail
-if recurStr[1].endswith("all") and not recurStr[1].endswith("-all"):
-	warn(f"{recurStr[1][-4:]} directive leaves action ambiguous", "Without a hard fail '-all' directive, mail clients will not take firm actions against spoofed mail")
-elif recurStr[1].endswith("-all"):
+if "all" in recurStr[1] and not "-all" in recurStr[1]:
+	warn(f"{recurStr[1][-10:-6]} directive leaves action ambiguous", "Without a hard fail '-all' directive, mail clients will not take firm actions against spoofed mail")
+elif "-all" in recurStr[1]:
 	info("'-all' directive is in use", "Mail clients know to hard fail spoofed mail")
 
 # EC2 etc. CIDRs are present
