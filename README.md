@@ -5,6 +5,13 @@ Audit your domain's SPF record, particularly for overtake and impersonation cond
 ### Dependencies
 
 * Python 3
+* Curl
+
+### Install
+
+```
+sudo python3 -m pip install -r requirements.txt
+```
 
 ### Usage
 

@@ -20,22 +20,46 @@ platformLinks = {
 	"OracleCloud": "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/addressranges.htm"
 }
 
-if not isfile("IPs.txt"):
-	exit("Run ./refreshIPs.sh to pull latest public CIDR lists")
+def optionsFunc():
+	import argparse
+	parser = argparse.ArgumentParser(description="", usage="Usage: python3 spf.py example-domain.com", add_help=True)
+	parser.add_argument("--target-address", "-t", nargs="+", dest="target_addr", default=[])
+	parser.add_argument("--ip-file", type=str, dest="ip_file", default="IPs.txt")
+	parser.add_argument("--refresh-file", type=str, dest="refresh_ip_file", default="refreshIPs.sh")
+	parser.add_argument("--domain", "-d", type=str, dest="domain", required=True)
 
-if len(argv) <= 1:
-	exit("Usage: python3 spf.py example-domain.com")
+	args, left = parser.parse_known_args()
+	options = args.__dict__
+
+	return options
+
+options = optionsFunc()
+
+if not isfile(options["ip_file"]):
+	import subprocess
+	import os
+	import stat
+	print("Forgot to run ./refreshIPs.sh to pull latest public CIDR lists")
+	os.chmod(options["refresh_ip_file"], stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+	subprocess.run(["./{}".format(options["refresh_ip_file"])], shell=True)
 
 # ./refreshIPs delimits by |, so split and load into python array and dict
-with open("IPs.txt", "r") as rawCIDRs:
+with open(options["ip_file"], "r") as rawCIDRs:
 	lines = rawCIDRs.read().split("\n")
 	for line in lines[:-1]:
 		cidr, platform = line.split("|")
 		CIDRs.append(ipaddr.IPNetwork(cidr))
 		CIDRmaps[cidr] = platform
 
+if(len(options['target_addr']) != 0):
+	for custom in options["target_addr"]:
+		cidr = custom
+		platform = "user_specified"
+		CIDRs.append(ipaddr.IPNetwork(cidr))
+		CIDRmaps[cidr] = platform
+
 # Grab just the hostname in case a URL is supplied
-domain = argv[1].strip("/").replace("https://", "")
+domain = options["domain"].strip("/").replace("https://", "")
 
 def paintY(s): return f"\033[93m{s}\033[00m"
 def paintB(s): return f"\033[44m{s}\033[00m"
