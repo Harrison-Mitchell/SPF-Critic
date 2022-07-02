@@ -17,7 +17,8 @@ platformLinks = {
 	"AWS": "https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html",
 	"Azure": "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519",
 	"DigitalOcean": "https://docs.digitalocean.com/products/platform/",
-	"OracleCloud": "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/addressranges.htm"
+	"OracleCloud": "https://docs.oracle.com/en-us/iaas/Content/General/Concepts/addressranges.htm",
+	"user_specified": ""
 }
 
 def optionsFunc():
